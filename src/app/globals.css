@@ -1,3 +1,14 @@
+:root {
+  --dark-blue: #191970;
+  --black: #07071a;
+  --red: #e31437;
+  --white: #e9eaf2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   font-family: "Libre Franklin", sans-serif;
   font-optical-sizing: auto;

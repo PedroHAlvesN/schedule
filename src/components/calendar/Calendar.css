@@ -1,0 +1,86 @@
+.container {
+    user-select: none;
+    max-width: 320px;
+    border: 1px solid var(--dark-blue);
+    border-radius: 6px;
+    background-color: white;
+}
+
+.date-select-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--dark-blue);
+    padding: 15px 15px 10px 15px;
+    border-radius: 6px 6px 0 0;
+}
+
+button {
+    font-size: 18px;
+    padding: 0;
+    margin: 0;
+    color: var(--dark-blue);
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    background-color: transparent;
+}
+
+.calendar-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    justify-content: space-between;
+    width: 100%;
+    padding: 5px 15px 15px 15px;
+}
+
+.week-name {
+    display: flex;
+    padding-bottom: 10px;
+    justify-content: center;
+    color: #191970;
+    font-weight: bold;
+}
+
+.days {
+    display: flex;
+    position: relative;
+    width: 27px;
+    height: 27px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--dark-blue);
+    border-radius: 50%;
+    margin: 5px 0;
+    border: 1px solid transparent;
+
+    &:hover:not(.selectedDay, .currentDay) {
+        background-color: rgba(25, 25, 112, 0.2);
+    }
+
+    &.selectedDay {
+        border: 1px solid var(--dark-blue);
+        border-radius: 50%;
+    }
+
+    &.notCurrentMonth {
+        color: rgba(25, 25, 112, 0.5);
+    }
+
+    &.currentDay {
+        background-color: var(--dark-blue);
+        color: white;
+    }
+
+    &.hasTask::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        height: 5px;
+        width: 5px;
+        border-radius: 50%;
+        background-color: var(--red);
+    }
+}

@@ -1,9 +1,9 @@
-import Schedule from "@/components/Schedule"
+import Calendar from "@/components/calendar/Calendar"
 
 export default function Home() {
   return (
     <>
-      <Schedule />
+      <Calendar />
     </>
   )
 }
