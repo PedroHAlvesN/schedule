@@ -1,6 +1,5 @@
 :root {
   --dark-blue: #191970;
-  --black: #07071a;
   --red: #e31437;
   --white: #e9eaf2;
 }
@@ -24,4 +23,6 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
 }

@@ -1,6 +1,6 @@
 .container {
     user-select: none;
-    max-width: 320px;
+    min-width: 320px;
     border: 1px solid var(--dark-blue);
     border-radius: 6px;
     background-color: white;
@@ -39,7 +39,7 @@ button {
     display: flex;
     padding-bottom: 10px;
     justify-content: center;
-    color: #191970;
+    color: var(--dark-blue);
     font-weight: bold;
 }
 

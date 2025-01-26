@@ -3,17 +3,15 @@
 import "./Calendar.css"
 import { useEffect, useState } from "react";
 
-export default function Schedule() {
-    type RenderedDateType = {
-        day: number,
-        month: number,
-        year: number
-    }
+type RenderedDateType = {
+    day: number,
+    month: number,
+    year: number
+}
 
-    const realDate = new Date();
+export default function Schedule({ currentDate, setCurrentDate, realDate }) {
     const week = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
     
-    let [currentDate, setCurrentDate] = useState(realDate)
     let [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
     let [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
     let [renderedDate, setRenderedDate] = useState<RenderedDateType[]>([])
