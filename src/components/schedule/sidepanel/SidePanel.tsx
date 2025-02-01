@@ -1,15 +1,22 @@
 'use client'
 
+import { FunctionComponent, PropsWithChildren } from "react"
 import "./SidePanel.css"
 
-export function SidePanel({ children }: ReactElement, selectedDate: Date ) {
+interface Props extends PropsWithChildren {
+	selectedDate: {day: number, month: number, year: number}
+	realDate: Date
+}
+
+export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, realDate }) => {
+	const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+
     return (
         <>
             <div className="side-panel-container">
 				{children}
                 <div className="side-panel">
-					{/* {selectedDate.day} de {monthNames[selectedDay.month]}, {selectedDay.year}*/}
-                    <h3 className="day">Dia 26 de Janeiro, 2025</h3>
+					<h3 className="selected-day-title">{selectedDate.day} de {monthNames[selectedDate.month]}, {selectedDate.year}</h3>
                     <input
                         type="text"
                         placeholder="Adicione uma atividade"

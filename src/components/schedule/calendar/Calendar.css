@@ -57,7 +57,7 @@ button {
     border: 1px solid transparent;
 
     &:hover:not(.selectedDay, .currentDay) {
-        background-color: rgba(25, 25, 112, 0.2);
+        background-color: var(--transparent-light-blue);
     }
 
     &.selectedDay {

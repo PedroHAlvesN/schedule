@@ -1,5 +1,6 @@
 :root {
   --dark-blue: #191970;
+  --transparent-light-blue: rgba(25, 25, 112, 0.2);
   --red: #e31437;
   --white: #e9eaf2;
 }
@@ -25,4 +26,8 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
+}
+
+p {
+  margin: 0;
 }

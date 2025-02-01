@@ -1,15 +1,24 @@
 'use client'
 
+import { type FunctionComponent, type Dispatch, useEffect, useState, type SetStateAction } from "react";
 import "./Calendar.css"
-import { useEffect, useState } from "react";
+import { Select } from "@/components/schedule/select/Select"
 
-type RenderedDateType = {
+interface Props {
+    currentDate: Date,
+    setCurrentDate: Dispatch<SetStateAction<Date>>,
+    realDate: Date
+}
+
+interface RenderedDateType {
     day: number,
     month: number,
     year: number
 }
 
-export default function Schedule({ currentDate, setCurrentDate, realDate }) {
+export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate, realDate }) => {
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+    const years = [...Array(51)].map((_, i) => 2000 + i);
     const week = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
     
     let [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
@@ -81,6 +90,25 @@ export default function Schedule({ currentDate, setCurrentDate, realDate }) {
         setRenderedDate(renderedDate)
 	}
 
+    function changeDate(value: string | number, type?: string) {
+        if(type === "month" && typeof value === "string" ) {
+            const monthNumberRef = monthNames.indexOf(value) + 1
+            const formattedMonthNumberRef = monthNumberRef < 9 ? `0${monthNumberRef}` : monthNumberRef
+            console.log(`${currentDate.getFullYear()}-${formattedMonthNumberRef}-02`)
+            setCurrentDate(new Date(`${currentDate.getFullYear()}-${formattedMonthNumberRef}-02`));
+        }
+    }
+
+    useEffect(() => {
+        handleCreateCalendar()
+    }, [currentMonth, currentYear])
+
+    useEffect(() => {
+        console.log(currentDate)
+        setCurrentMonth(currentDate.getMonth())
+        setCurrentYear(currentDate.getFullYear())
+    }, [currentDate])
+
     useEffect(() => {
         handleCreateCalendar()
     }, [])
@@ -88,11 +116,31 @@ export default function Schedule({ currentDate, setCurrentDate, realDate }) {
     return (
         <>
             <div className="container">
-                {/*<div className="date-select-container">
-                    <MonthSelect bind:currentDate />
-                    <button onClick={() => currentDate = new Date()}>Hoje</button>
-                    <YearSelect bind:currentDate />
-                </div>*/}
+                <div className="date-select-container">
+                    <Select selected={monthNames[currentDate.getMonth()]}>
+                        {monthNames.map(monthName => {
+                            const selected = monthNames[currentDate.getMonth()] === monthName
+                                ? "selected"
+                                : undefined
+
+                            return (
+                                <span className={selected} onClick={() => changeDate(monthName, "month")}>{monthName}</span>
+                            )
+                        })}
+                    </Select>
+                    <button onClick={() => setCurrentDate(realDate)}>Hoje</button>
+                    <Select selected={currentDate.getFullYear().toString()}>
+                        {years.map(year => {
+                            const selected = year === currentDate.getFullYear()
+                                ? "selected"
+                                : undefined
+
+                            return (
+                                <span className={selected}>{year}</span>
+                            )
+                        })}
+                    </Select>
+                </div>
                 <div className="calendar-container">
                     {week.map(weekName => {
                         return (

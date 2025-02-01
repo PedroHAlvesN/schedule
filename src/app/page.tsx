@@ -1,10 +1,10 @@
 "use client"
 
-import Calendar from "@/components/calendar/Calendar"
-import { SidePanel } from "@/components/calendar/SidePanel"
+import { Calendar } from "@/components/schedule/calendar/Calendar"
+import { SidePanel } from "@/components/schedule/sidepanel/SidePanel"
 import { useState } from "react"
 
-type SelectedDateType = {
+interface SelectedDateType {
   day: number,
   month: number,
   year: number
@@ -13,13 +13,13 @@ type SelectedDateType = {
 export default function Home() {
   const realDate = new Date()
 
-  let [selectedDate, setSelectedDay] = useState<SelectedDateType>()
   let [currentDate, setCurrentDate] = useState<Date>(realDate)
+  let [selectedDate, setSelectedDate] = useState<SelectedDateType>({day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear()})
   let [allTasks, setAllTasks] = useState()
 
   return (
     <>
-      <SidePanel selectedDate>
+      <SidePanel selectedDate={selectedDate} realDate={realDate}>
         <Calendar
           currentDate={currentDate}
           setCurrentDate={setCurrentDate}

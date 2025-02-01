@@ -1,0 +1,50 @@
+.select-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    & .selected {
+        color: var(--dark-blue);
+    }
+}
+
+img {
+    width: 15px;
+    height: 15px;
+}
+
+.select-options {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    max-height: 232px;
+    overflow-y: scroll;
+    flex-direction: column;
+    color: var(--dark-blue);
+    left: 50%;
+    background-color: white;
+    padding: 8px;
+    border: 1px solid var(--dark-blue);
+    border-radius: 8px;
+    transform: translate(-50%);
+    gap: 5px;
+
+    & span {
+        padding: 3px;
+        border-radius: 5px;
+
+        &:hover {
+            background-color: var(--transparent-light-blue);
+        }
+
+        &.selected {
+            background-color: var(--dark-blue);
+            color: white;
+        }
+    }
+}
