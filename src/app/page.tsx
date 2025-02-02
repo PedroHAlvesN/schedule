@@ -22,7 +22,9 @@ export default function Home() {
       <SidePanel selectedDate={selectedDate} realDate={realDate}>
         <Calendar
           currentDate={currentDate}
+          selectedDate={selectedDate}
           setCurrentDate={setCurrentDate}
+          setSelectedDate={setSelectedDate}
           realDate={realDate}
         />
       </SidePanel>

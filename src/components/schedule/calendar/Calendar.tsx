@@ -7,6 +7,8 @@ import { Select } from "@/components/schedule/select/Select"
 interface Props {
     currentDate: Date,
     setCurrentDate: Dispatch<SetStateAction<Date>>,
+    selectedDate: RenderedDateType,
+    setSelectedDate: Dispatch<SetStateAction<RenderedDateType>>
     realDate: Date
 }
 
@@ -16,7 +18,7 @@ interface RenderedDateType {
     year: number
 }
 
-export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate, realDate }) => {
+export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate, selectedDate, setSelectedDate , realDate }) => {
     const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
     const years = [...Array(51)].map((_, i) => 2000 + i);
     const week = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
@@ -25,12 +27,6 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
     let [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
     let [renderedDate, setRenderedDate] = useState<RenderedDateType[]>([])
     let [hasTask, setHasTask] = useState([])
-
-    let [selectedDay, setSelectedDay] = useState({
-		day: currentDate.getDate(),
-		month: currentDate.getMonth(),
-		year: currentDate.getFullYear()
-	})
 
     function handleCreateCalendar() {
 		renderedDate = []
@@ -94,9 +90,12 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
         if(type === "month" && typeof value === "string" ) {
             const monthNumberRef = monthNames.indexOf(value) + 1
             const formattedMonthNumberRef = monthNumberRef < 9 ? `0${monthNumberRef}` : monthNumberRef
-            console.log(`${currentDate.getFullYear()}-${formattedMonthNumberRef}-02`)
             setCurrentDate(new Date(`${currentDate.getFullYear()}-${formattedMonthNumberRef}-02`));
+            return
         }
+        const monthNumberRef = currentDate.getMonth() + 1
+        const formattedMonthNumberRef = monthNumberRef < 9 ? `0${monthNumberRef}` : monthNumberRef
+        setCurrentDate(new Date(`${value}-${formattedMonthNumberRef}-02`));
     }
 
     useEffect(() => {
@@ -104,7 +103,6 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
     }, [currentMonth, currentYear])
 
     useEffect(() => {
-        console.log(currentDate)
         setCurrentMonth(currentDate.getMonth())
         setCurrentYear(currentDate.getFullYear())
     }, [currentDate])
@@ -124,11 +122,23 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
                                 : undefined
 
                             return (
-                                <span className={selected} onClick={() => changeDate(monthName, "month")}>{monthName}</span>
+                                <span
+                                    className={selected}
+                                    onClick={() => changeDate(monthName, "month")}
+                                >{monthName}</span>
                             )
                         })}
                     </Select>
-                    <button onClick={() => setCurrentDate(realDate)}>Hoje</button>
+                    <button onClick={() => {
+                        setCurrentDate(realDate)
+                        setSelectedDate(
+                            {
+                                day: realDate.getDate(),
+                                month: realDate.getMonth(),
+                                year: realDate.getFullYear()
+                            })
+                    }
+                    }>Hoje</button>
                     <Select selected={currentDate.getFullYear().toString()}>
                         {years.map(year => {
                             const selected = year === currentDate.getFullYear()
@@ -136,7 +146,10 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
                                 : undefined
 
                             return (
-                                <span className={selected}>{year}</span>
+                                <span
+                                    className={selected}
+                                    onClick={() => changeDate(year)}
+                                >{year}</span>
                             )
                         })}
                     </Select>
@@ -152,9 +165,9 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
                         
                     {renderedDate.map(date => {
                         const selectedDayClass =
-                            date.day == selectedDay.day
-                            && date.month == selectedDay.month
-                            && date.year == selectedDay.year
+                            date.day == selectedDate.day
+                            && date.month == selectedDate.month
+                            && date.year == selectedDate.year
                             ? " selectedDay" : ""
 
                         const currentDayClass =
@@ -170,7 +183,7 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
                         return (
                             <span
                                 role="button"
-                                onClick={() => setSelectedDay(date)}
+                                onClick={() => setSelectedDate(date)}
                                 className={`days${selectedDayClass}${currentDayClass}${notCurrentMonthClass}`}
                                 //className:hasTask={hasTask.length > 0}
                             >
