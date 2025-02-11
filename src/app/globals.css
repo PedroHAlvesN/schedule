@@ -1,7 +1,12 @@
 :root {
   --dark-blue: #191970;
+  --dark-green: #197028;
+  --dark-orange: #957419;
+  --light-orange: #c8ac6187;
+  --light-green: #53c66691;
   --transparent-light-blue: rgba(25, 25, 112, 0.2);
   --red: #e31437;
+  --light-red: #ff879b40;
   --white: #e9eaf2;
 }
 

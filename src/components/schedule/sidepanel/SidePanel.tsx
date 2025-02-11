@@ -1,15 +1,47 @@
 'use client'
 
-import { FunctionComponent, PropsWithChildren } from "react"
+import { Dispatch, FunctionComponent, PropsWithChildren, SetStateAction, useEffect, useState } from "react"
+import { AddTaskButton } from "@/components/schedule/task/addtaskbutton/AddTaskButton"
 import "./SidePanel.css"
+import { Task } from "@/components/schedule/task/Task"
 
-interface Props extends PropsWithChildren {
-	selectedDate: {day: number, month: number, year: number}
-	realDate: Date
+interface SelectedDateType {
+	day: number,
+	month: number,
+	year: number
 }
 
-export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, realDate }) => {
+interface TaskType {
+	date: SelectedDateType
+	title: string,
+	description: string
+}
+
+
+interface Props extends PropsWithChildren {
+	selectedDate: SelectedDateType
+	realDate: Date,
+	allTasks: TaskType[]
+	setAllTasks: Dispatch<SetStateAction<TaskType[]>>
+}
+
+export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, allTasks, setAllTasks }) => {
 	const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+	const [open, setOpen] = useState<Boolean>(false)
+	const [currentTasks, setCurrentTasks] = useState<TaskType[]>([])
+
+	function getCurrentTasks() {
+		allTasks.map(task => {
+			const isCurrentDay = task.date.day === selectedDate.day
+			const isCurrentMonth = task.date.month === selectedDate.month
+			const isCurrentYear = task.date.year === selectedDate.year
+			if(isCurrentDay && isCurrentMonth && isCurrentYear) setCurrentTasks([...currentTasks, task ])
+		})
+	}
+
+	useEffect(() => {
+		getCurrentTasks()
+	}, [allTasks])
 
     return (
         <>
@@ -17,19 +49,17 @@ export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, rea
 				{children}
                 <div className="side-panel">
 					<h3 className="selected-day-title">{selectedDate.day} de {monthNames[selectedDate.month]}, {selectedDate.year}</h3>
-                    <input
-                        type="text"
-                        placeholder="Adicione uma atividade"
-                        onKeyDown={(event) => console.log("teste")}
-                    />
                     <div className="tasks-container">
-                        {/*{#if currentTasks.length == 0}
-                            Nenhuma atividade ainda marcada nesta data.
-                        {:else}
-                            {#each currentTasks as task}
-                                <p>{task.task}</p>
-                            {/each}
-                        {/if}*/}
+						{open ? <Task editing={true} allTasks={allTasks} setAllTasks={setAllTasks} /> : <AddTaskButton setOpen={setOpen} />}
+						{currentTasks.map(task => {
+							return (
+								<Task
+									task={task}
+									allTasks={allTasks}
+									setAllTasks={setAllTasks}
+								/>
+							)
+						})}
                     </div>
                 </div>
             </div>

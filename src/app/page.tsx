@@ -10,16 +10,27 @@ interface SelectedDateType {
   year: number
 }
 
+interface TaskType {
+	date: SelectedDateType
+	title: string,
+	description: string
+}
+
 export default function Home() {
   const realDate = new Date()
 
-  let [currentDate, setCurrentDate] = useState<Date>(realDate)
-  let [selectedDate, setSelectedDate] = useState<SelectedDateType>({day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear()})
-  let [allTasks, setAllTasks] = useState()
+  const [currentDate, setCurrentDate] = useState<Date>(realDate)
+  const [selectedDate, setSelectedDate] = useState<SelectedDateType>({day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear()})
+  const [allTasks, setAllTasks] = useState<TaskType[]>([{date: {day: 11, month: 1, year: 2025}, title: "Teste", description: "teste"}])
 
   return (
     <>
-      <SidePanel selectedDate={selectedDate} realDate={realDate}>
+      <SidePanel 
+        selectedDate={selectedDate}
+        realDate={realDate}
+        allTasks={allTasks}
+        setAllTasks={setAllTasks}
+      >
         <Calendar
           currentDate={currentDate}
           selectedDate={selectedDate}

@@ -1,0 +1,57 @@
+.task-content {
+    display: flex;
+    background-color: white;
+    height: 60px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--dark-blue);
+    font-size: 16px;
+
+    & .text-container {
+        display: flex;
+        padding: 8px;
+        flex-direction: column;
+        width: 100%;
+        color: var(--dark-blue);
+        border-right: 1px solid var(--dark-blue);
+
+        & .title {
+            font-size: 18px;
+        }
+
+        & .description {
+            font-size: 14px;
+        }
+    }
+
+    & .icons-container {
+        display: flex;
+        flex-direction: column;
+        min-width: 60px;
+        height: 100%;
+
+        & button {
+            height: 100%;
+
+            &.edit {
+                background-color: var(--light-orange);
+                border-top-right-radius: 8px;
+            }
+
+            &.confirm {
+                background-color: var(--light-green);
+                border-top-right-radius: 8px;
+            }
+
+            &.remove, &.cancel {
+                background-color: var(--light-red);
+                border-bottom-right-radius: 8px;
+            }
+        }
+
+        & img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
