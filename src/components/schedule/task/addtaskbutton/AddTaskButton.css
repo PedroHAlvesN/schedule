@@ -1,11 +1,60 @@
-.add-task-button {
+.add-task-container {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: white;
-    height: 60px;
+    height: 80px;
     width: 100%;
     border-radius: 8px;
     border: 1px solid var(--dark-blue);
+    cursor: pointer;
+}
+
+.text-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    justify-content: center;
+    gap: 8px;
+}
+
+input[type=text] {
+    width: 100%;
+    border: 1px solid var(--dark-blue);
+    border-radius: 5px;
+    color: var(--dark-blue);
+}
+
+.title {
     font-size: 16px;
+}
+
+.icons-container {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    height: 100%;
+    border-left: 1px solid var(--dark-blue);
+
+    & div {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    & img {
+        width: 20px;
+        height: 20px;
+    }
+    
+    & .confirm-icon {
+        background-color: var(--light-green);
+    }
+
+    & .remove-icon, .cancel-icon {
+        background-color: var(--light-red);
+    }
 }

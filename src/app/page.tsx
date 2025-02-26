@@ -21,7 +21,7 @@ export default function Home() {
 
   const [currentDate, setCurrentDate] = useState<Date>(realDate)
   const [selectedDate, setSelectedDate] = useState<SelectedDateType>({day: currentDate.getDate(), month: currentDate.getMonth(), year: currentDate.getFullYear()})
-  const [allTasks, setAllTasks] = useState<TaskType[]>([{date: {day: 11, month: 1, year: 2025}, title: "Teste", description: "teste"}])
+  const [allTasks, setAllTasks] = useState<TaskType[]>([])
 
   return (
     <>
@@ -37,6 +37,7 @@ export default function Home() {
           setCurrentDate={setCurrentDate}
           setSelectedDate={setSelectedDate}
           realDate={realDate}
+          allTasks={allTasks}
         />
       </SidePanel>
     </>
