@@ -37,6 +37,7 @@ export default function Home() {
           setCurrentDate={setCurrentDate}
           setSelectedDate={setSelectedDate}
           realDate={realDate}
+          allTasks={allTasks}
         />
       </SidePanel>
     </>

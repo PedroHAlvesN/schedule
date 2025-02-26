@@ -3,22 +3,18 @@
 import { type FunctionComponent, type Dispatch, useEffect, useState, type SetStateAction } from "react";
 import "./Calendar.css"
 import { Select } from "@/components/schedule/select/Select"
+import type { RenderedDateType, TaskType } from "@/types/types"
 
 interface Props {
     currentDate: Date,
     setCurrentDate: Dispatch<SetStateAction<Date>>,
     selectedDate: RenderedDateType,
-    setSelectedDate: Dispatch<SetStateAction<RenderedDateType>>
-    realDate: Date
+    setSelectedDate: Dispatch<SetStateAction<RenderedDateType>>,
+    realDate: Date,
+    allTasks: TaskType[]
 }
 
-interface RenderedDateType {
-    day: number,
-    month: number,
-    year: number
-}
-
-export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate, selectedDate, setSelectedDate , realDate }) => {
+export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate, selectedDate, setSelectedDate , realDate, allTasks }) => {
     const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
     const years = [...Array(51)].map((_, i) => 2000 + i);
     const week = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
@@ -100,7 +96,7 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
 
     useEffect(() => {
         handleCreateCalendar()
-    }, [currentMonth, currentYear])
+    }, [currentMonth, currentYear, allTasks])
 
     useEffect(() => {
         setCurrentMonth(currentDate.getMonth())
@@ -164,28 +160,34 @@ export const Calendar:FunctionComponent<Props> = ({ currentDate, setCurrentDate,
                     })}
                         
                     {renderedDate.map(date => {
-                        const selectedDayClass =
-                            date.day == selectedDate.day
+                        const classes = ["days"]
+
+                        date.day == selectedDate.day
                             && date.month == selectedDate.month
                             && date.year == selectedDate.year
-                            ? " selectedDay" : ""
+                            && classes.push("selectedDay")
 
-                        const currentDayClass =
-                            date.day == realDate.getDate()
+                        date.day == realDate.getDate()
                             && date.month == realDate.getMonth()
                             && date.year == realDate.getFullYear()
-                            ? " currentDay" : ""
+                            && classes.push("currentDay")
 
-                        const notCurrentMonthClass =
-                            date.month != currentMonth
-                            ? " notCurrentMonth" : ""
+                        date.month != currentMonth
+                            && classes.push("notCurrentMonth")
+
+                        {allTasks.some(task => {
+                            if(date.day === task.date.day
+                            && date.month === task.date.month
+                            && date.year === task.date.year)
+                            return true
+
+                        }) && classes.push("hasTask")}
 
                         return (
                             <span
                                 role="button"
                                 onClick={() => setSelectedDate(date)}
-                                className={`days${selectedDayClass}${currentDayClass}${notCurrentMonthClass}`}
-                                //className:hasTask={hasTask.length > 0}
+                                className={classes.join(" ")}
                             >
                                 {date.day}
                             </span>
