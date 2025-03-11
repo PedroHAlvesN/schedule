@@ -6,11 +6,10 @@ Manage tasks, events, and activities on specific calendar dates. You can:
  - Add
  - Remove
  - Edit
- - Sort
  - Search
 
 ## Preview
 
-You can see the latest deployment for production of this project on this link: https://schedule-w7txv48se-pedrohalvesns-projects.vercel.app
+You can see a preview of this project on this link: https://schedule-project-phan.vercel.app/
 
 ## This project is still a work in progress
