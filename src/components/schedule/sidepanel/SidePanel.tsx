@@ -23,9 +23,9 @@ export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, all
 			const isCurrentDay = task.date.day === selectedDate.day
 			const isCurrentMonth = task.date.month === selectedDate.month
 			const isCurrentYear = task.date.year === selectedDate.year
-			if(isCurrentDay && isCurrentMonth && isCurrentYear) currentTasks = [ task, ...currentTasks ]
+			if(isCurrentDay && isCurrentMonth && isCurrentYear) currentTasks = [ ...currentTasks, task ]
 		})
-		console.log(currentTasks)
+
 		setCurrentTasks(currentTasks)
 	}
 
@@ -46,9 +46,10 @@ export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, all
 							setAllTasks={setAllTasks}
 							selectedDate={selectedDate}
 						/>
-						{currentTasks.map(task => {
+						{currentTasks.map((task, index) => {
 							return (
 								<Task
+									index={index}
 									task={task}
 									allTasks={allTasks}
 									setAllTasks={setAllTasks}

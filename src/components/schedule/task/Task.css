@@ -1,7 +1,7 @@
 .task-content {
     display: flex;
     background-color: white;
-    height: 60px;
+    height: 80px;
     width: 100%;
     border-radius: 8px;
     border: 1px solid var(--dark-blue);
@@ -13,7 +13,6 @@
         flex-direction: column;
         width: 100%;
         color: var(--dark-blue);
-        border-right: 1px solid var(--dark-blue);
 
         & .title {
             font-size: 18px;
@@ -21,6 +20,7 @@
 
         & .description {
             font-size: 14px;
+            font-style: italic;
         }
     }
 
