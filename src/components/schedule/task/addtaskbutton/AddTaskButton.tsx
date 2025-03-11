@@ -1,4 +1,4 @@
-import { Dispatch, FunctionComponent, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, FunctionComponent, SetStateAction, useEffect, useRef, useState } from "react"
 import "@/components/schedule/task/addtaskbutton/AddTaskButton.css"
 import type { TaskType, RenderedDateType } from "@/types/types"
 
@@ -13,7 +13,7 @@ export const AddTaskButton: FunctionComponent<Props> = ({ allTasks, setAllTasks,
     const [ titleValue, setTitleValue ] = useState<string>("")
     const [ descriptionValue, setDescriptionValue ] = useState<string>("")
     const [ warning, setWarning ] = useState<Boolean>(false)
-    let [ width, setWidth ] = useState<number>(1)
+    const progressBarRef = useRef<HTMLDivElement>(null)
 
     function addNewTask() {
         if(titleValue === "" && !warning) {
@@ -39,17 +39,20 @@ export const AddTaskButton: FunctionComponent<Props> = ({ allTasks, setAllTasks,
         setOpen(false)
     }, [selectedDate])
 
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
     useEffect(() => {
-        const warningTimeId = setInterval(() => {
-            if(width >= 100) {
-                setWarning(false)
-                setWidth(1)
-                clearInterval(warningTimeId)
-                return
+        if(!warning) return
+        const wrapper = async () => {
+            if(!progressBarRef.current) return
+            for(let i = 1; i <= 100; i++) {
+                progressBarRef.current.style.width = i + "%";
+                await sleep(20)
             }
-            width++;
-            setWidth(width);
-        }, 20);
+            setWarning(false)
+            progressBarRef.current.style.width = "60px";
+        }
+        wrapper()
     }, [warning])
 
     return (
@@ -61,7 +64,7 @@ export const AddTaskButton: FunctionComponent<Props> = ({ allTasks, setAllTasks,
                             ?
                             <div className="warning-container">
                                 title field is empty
-                                <div className="progress-bar" style={{width: width + "%"}} />
+                                <div className="progress-bar" ref={progressBarRef} />
                             </div>
                             :
                             <div className="content">

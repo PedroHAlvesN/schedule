@@ -18,20 +18,22 @@ export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, all
 	let [currentTasks, setCurrentTasks] = useState<TaskType[]>([])
 
 	function getCurrentTasks() {
-		currentTasks = []
 		allTasks.map(task => {
 			const isCurrentDay = task.date.day === selectedDate.day
 			const isCurrentMonth = task.date.month === selectedDate.month
 			const isCurrentYear = task.date.year === selectedDate.year
 			if(isCurrentDay && isCurrentMonth && isCurrentYear) currentTasks = [ ...currentTasks, task ]
 		})
-
 		setCurrentTasks(currentTasks)
 	}
 
 	useEffect(() => {
-		setCurrentTasks([])
+		if(currentTasks.length !== 0) return
 		getCurrentTasks()
+	}, [currentTasks])
+
+	useEffect(() => {
+		setCurrentTasks([])
 	}, [selectedDate, allTasks])
 
     return (
