@@ -10,6 +10,6 @@ Manage tasks, events, and activities on specific calendar dates. You can:
 
 ## Preview
 
-You can see a preview of this project on this link: https://schedule-project-phan.vercel.app/
+You can see a preview of this project on this link: https://schedule-lac.vercel.app/
 
 ## This project is still a work in progress
