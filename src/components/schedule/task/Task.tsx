@@ -16,8 +16,14 @@ export const Task:FunctionComponent<Props> = ({ task, index, allTasks, setAllTas
     const [ isEditing, setIsEditing] = useState<Boolean>(editing)
     const [ titleValue, setTitleValue] = useState("")
     const [ descriptionValue, setDescriptionValue] = useState("")
+    const [ warning, setWarning ] = useState<Boolean>(false)
+    let [ width, setWidth ] = useState<number>(1)
 
     function editTask() {
+        if(titleValue === "") {
+            setWarning(true)
+            return
+        }
         const editedTask = allTasks[index]
         editedTask.title = titleValue
         editedTask.description = descriptionValue
@@ -38,19 +44,60 @@ export const Task:FunctionComponent<Props> = ({ task, index, allTasks, setAllTas
         setDescriptionValue(task.description)
     }, [task])
 
+    useEffect(() => {
+        const warningTimeId = setInterval(() => {
+            if(width >= 100) {
+                setWarning(false)
+                setWidth(1)
+                clearInterval(warningTimeId)
+                return
+            }
+            width++;
+            setWidth(width);
+        }, 20);
+    }, [warning])
+
+    useEffect(() => {
+        if(!task) return
+        setTitleValue(task.title)
+        setDescriptionValue(task.description)
+    }, [task])
+
     return (
         <>
             <div className="task-content">
-                <div className="text-container">
-                    { isEditing
-                        ? <input type="text" className="title-input" value={titleValue} onChange={(event) => setTitleValue(event.target.value)} />
-                        : <p className="title">{task?.title}</p>
-                    }
-                    { isEditing
-                        ? <input type="text" className="title-input" value={descriptionValue} onChange={(event) => setDescriptionValue(event.target.value)} />
-                        : <p className="description">{task?.description || "sem descrição"}</p>
-                    }
-                </div>
+                { isEditing
+                    ?
+                    warning
+                        ?
+                        <div className="text-container">
+                            <div className="warning-container">
+                                    title field is empty
+                                <div className="progress-bar" style={{width: width + "%"}} />
+                            </div>
+                        </div>
+                        :
+                        <div className="text-container">
+                            <input
+                                type="text"
+                                className="title-input"
+                                placeholder="Title"
+                                value={titleValue}
+                                onChange={(event) => setTitleValue(event.target.value)}
+                            />
+                            <input type="text"
+                                className="title-input"
+                                placeholder="Description"
+                                value={descriptionValue}
+                                onChange={(event) => setDescriptionValue(event.target.value)}
+                            />
+                        </div>
+                    :
+                    <div className="text-container">
+                        <p className="title">{task?.title}</p>
+                        <p className="description">{task?.description || "sem descrição"}</p>
+                    </div>
+                }
                 <div className="icons-container">
                     <button
                         className={isEditing ? "confirm" : "edit"}
