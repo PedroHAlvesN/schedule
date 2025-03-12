@@ -16,6 +16,9 @@ interface Props extends PropsWithChildren {
 export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, allTasks, setAllTasks }) => {
 	const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 	let [currentTasks, setCurrentTasks] = useState<TaskType[]>([])
+	let [ formatedCurrentTask, setFormatedCurrentTask ] = useState<TaskType[]>([])
+	const [ search, setSearch ] = useState<Boolean>(false)
+	const [ searchValue, setSearchValue ] = useState<string>("")
 
 	function getCurrentTasks() {
 		allTasks.map(task => {
@@ -25,6 +28,20 @@ export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, all
 			if(isCurrentDay && isCurrentMonth && isCurrentYear) currentTasks = [ ...currentTasks, task ]
 		})
 		setCurrentTasks(currentTasks)
+		setFormatedCurrentTask(currentTasks)
+		setSearch(false)
+	}
+
+	function searchTask() {
+		formatedCurrentTask = []
+		if(searchValue === "") {
+			formatedCurrentTask = currentTasks
+		}else {
+			currentTasks.map(task => {
+				if(task.title.toLowerCase().includes(searchValue.toLowerCase())) formatedCurrentTask = [ ...formatedCurrentTask, task ]
+			})
+		}
+		setFormatedCurrentTask(formatedCurrentTask)
 	}
 
 	useEffect(() => {
@@ -36,19 +53,33 @@ export const SidePanel:FunctionComponent<Props> = ({ children, selectedDate, all
 		setCurrentTasks([])
 	}, [selectedDate, allTasks])
 
+	useEffect(() => {
+		searchTask()
+	}, [searchValue])
+
     return (
         <>
             <div className="side-panel-container">
 				{children}
                 <div className="side-panel">
-					<h3 className="selected-day-title">{selectedDate.day} de {monthNames[selectedDate.month]}, {selectedDate.year}</h3>
-                    <div className="tasks-container">
+					<div className="header-container">
+						<h3 className="selected-day-title">{selectedDate.day} de {monthNames[selectedDate.month]}, {selectedDate.year}</h3>
+						<div className="search" onClick={(event) => {event.preventDefault(), setSearch(!search)}}>
+							<img src="/search.png" alt="" />
+							<input
+								className={search ? "show" : "hidden"}
+								type="text" onClick={(event) => event.stopPropagation()}
+								onChange={(event) => setSearchValue(event.target.value)}
+							/>
+						</div>
+					</div>
+					<div className="tasks-container">
 						<AddTaskButton
 							allTasks={allTasks}
 							setAllTasks={setAllTasks}
 							selectedDate={selectedDate}
 						/>
-						{currentTasks.map((task, index) => {
+						{formatedCurrentTask.map((task, index) => {
 							return (
 								<Task
 									index={index}

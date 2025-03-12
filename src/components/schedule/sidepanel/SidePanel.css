@@ -15,6 +15,47 @@
     align-items: flex-start;
 }
 
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 20px;
+}
+
+.search {
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    height: 28px;
+    min-width: 28px;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0 10px;
+    transition: 0.2s ease-in-out;
+
+    & img {
+        width: 20px;
+        height: 20px;
+    }
+
+    & input {
+        transition: 0.2s ease-in-out;
+    }
+
+    & .hidden {
+        width: 0;
+        padding: 0;
+    }
+
+    & .show {
+        width: 100%;
+        margin-left: 10px;
+    }
+
+    
+}
+
 .selected-day-title {
     color: var(--dark-blue);
     margin: 0 0 10px 0;
